@@ -1,10 +1,18 @@
+import Player from "./component/Player";
 
-function App() {
-  
-
+const App = () => {
   return (
-    <h1>React Tic-Tac-Toe</h1>
-  )
-}
+    <>
+      <ol id="game-container">
+        <div id="players">
+          <Player initialName="player 1" symbol="X" />
+          <Player initialName="player 2" symbol="O" />
+        </div>
+        <div>gameBoard</div>
+        <div>log</div>
+      </ol>
+    </>
+  );
+};
 
-export default App
+export default App;
