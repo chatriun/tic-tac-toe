@@ -4,9 +4,21 @@ import GameBoard from "./component/GameBoard";
 
 const App = () => {
   const [activePlayer, setActivePlayer] = useState("X");
+  const [playerTurn, setPlayerTurn] = useState([]);
 
-  const handleSelectBox = () => {
+  const handleSelectBox = (rowIndex, colIndex) => {
     setActivePlayer((curPlayer) => (curPlayer === "X" ? "O" : "X"));
+    setPlayerTurn((prevTurn) => {
+      let currentPlayer = "X";
+      if (prevTurn.length > 0 && prevTurn[0].player === "X") {
+        currentPlayer = "O";
+      }
+      const updateTurn = [
+        { square: { row: rowIndex, col: colIndex }, player: currentPlayer },
+        ...prevTurn,
+      ];
+      return updateTurn;
+    });
   };
 
   return (
@@ -24,7 +36,7 @@ const App = () => {
             isActive={activePlayer === "O"}
           />
         </div>
-        <GameBoard onSelectBox={handleSelectBox} playerSymbol={activePlayer} />
+        <GameBoard onSelectBox={handleSelectBox} turns={playerTurn} />
         <div>log</div>
       </ol>
     </>
