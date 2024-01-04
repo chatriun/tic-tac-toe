@@ -1,18 +1,33 @@
+import { useState } from "react";
+
 const initialGameBoard = [
   [null, null, null],
   [null, null, null],
   [null, null, null],
 ];
 
-const GameBoard = () => {
+const GameBoard = ({ onSelectBox, playerSymbol }) => {
+  const [gameBoard, setGameBoard] = useState(initialGameBoard);
+
+  const handleSelectBox = (rowIndex, colIndex) => {
+    setGameBoard((prevGameBoard) => {
+      const updateBoard = [...prevGameBoard];
+      updateBoard[rowIndex][colIndex] = playerSymbol;
+      return updateBoard;
+    });
+    onSelectBox();
+  };
+
   return (
     <ol id="game-board">
-      {initialGameBoard.map((row, rowIndex) => (
+      {gameBoard.map((row, rowIndex) => (
         <li key={rowIndex}>
           <ol>
             {row.map((playerSymbol, colIndex) => (
               <li key={colIndex}>
-                <button>{playerSymbol}</button>
+                <button onClick={() => handleSelectBox(rowIndex, colIndex)}>
+                  {playerSymbol}
+                </button>
               </li>
             ))}
           </ol>
