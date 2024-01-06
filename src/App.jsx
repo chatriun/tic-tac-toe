@@ -2,17 +2,24 @@ import { useState } from "react";
 import Player from "./component/Player";
 import GameBoard from "./component/GameBoard";
 
+const derivePlayerTurn = (playerTurn) => {
+  let currentPlayer = "X";
+  if (playerTurn.length > 0 && playerTurn[0].player === "X") {
+    currentPlayer = "O";
+  }
+  return currentPlayer;
+};
+
 const App = () => {
-  const [activePlayer, setActivePlayer] = useState("X");
+  // const [activePlayer, setActivePlayer] = useState("X");
   const [playerTurn, setPlayerTurn] = useState([]);
+  const activePlayer = derivePlayerTurn(playerTurn);
 
   const handleSelectBox = (rowIndex, colIndex) => {
-    setActivePlayer((curPlayer) => (curPlayer === "X" ? "O" : "X"));
+    // setActivePlayer((curPlayer) => (curPlayer === "X" ? "O" : "X"));
     setPlayerTurn((prevTurn) => {
-      let currentPlayer = "X";
-      if (prevTurn.length > 0 && prevTurn[0].player === "X") {
-        currentPlayer = "O";
-      }
+      const currentPlayer = derivePlayerTurn(prevTurn);
+
       const updateTurn = [
         { square: { row: rowIndex, col: colIndex }, player: currentPlayer },
         ...prevTurn,
