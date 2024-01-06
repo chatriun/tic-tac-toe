@@ -2,6 +2,7 @@ import { useState } from "react";
 import Player from "./component/Player";
 import GameBoard from "./component/GameBoard";
 import Log from "./component/Log";
+import { WINNING_COMBINATIONS } from "./WINNING_COMBINATIONS";
 
 const derivePlayerTurn = (playerTurn) => {
   let currentPlayer = "X";
@@ -11,13 +12,25 @@ const derivePlayerTurn = (playerTurn) => {
   return currentPlayer;
 };
 
+const initialGameBoard = [
+  [null, null, null],
+  [null, null, null],
+  [null, null, null],
+];
+
 const App = () => {
-  // const [activePlayer, setActivePlayer] = useState("X");
   const [playerTurn, setPlayerTurn] = useState([]);
   const activePlayer = derivePlayerTurn(playerTurn);
 
+  let gameBoard = initialGameBoard;
+
+  for (const turn of playerTurn) {
+    const { square, player } = turn;
+    const { row, col } = square;
+    gameBoard[row][col] = player;
+  }
+
   const handleSelectBox = (rowIndex, colIndex) => {
-    // setActivePlayer((curPlayer) => (curPlayer === "X" ? "O" : "X"));
     setPlayerTurn((prevTurn) => {
       const currentPlayer = derivePlayerTurn(prevTurn);
 
@@ -28,6 +41,21 @@ const App = () => {
       return updateTurn;
     });
   };
+  let winner;
+  for (const combination of WINNING_COMBINATIONS) {
+    const firstSymbolBox = gameBoard[combination[0].row][combination[0].column];
+    const secondSymbolBox =
+      gameBoard[combination[1].row][combination[1].column];
+    const thirdSymbolBox = gameBoard[combination[2].row][combination[2].column];
+
+    if (
+      firstSymbolBox &&
+      firstSymbolBox === secondSymbolBox &&
+      firstSymbolBox === thirdSymbolBox
+    ) {
+      winner = firstSymbolBox;
+    }
+  }
 
   return (
     <main>
@@ -44,7 +72,8 @@ const App = () => {
             isActive={activePlayer === "O"}
           />
         </div>
-        <GameBoard onSelectBox={handleSelectBox} turns={playerTurn} />
+        {winner && <span>winner is {winner}</span>}
+        <GameBoard onSelectBox={handleSelectBox} board={gameBoard} />
       </ol>
       <Log turns={playerTurn} />
     </main>
