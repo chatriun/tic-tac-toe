@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Player from "./component/Player";
 import GameBoard from "./component/GameBoard";
+import Log from "./component/Log";
 
 const derivePlayerTurn = (playerTurn) => {
   let currentPlayer = "X";
@@ -29,7 +30,7 @@ const App = () => {
   };
 
   return (
-    <>
+    <main>
       <ol id="game-container">
         <div id="players" className="highlight-player">
           <Player
@@ -44,9 +45,9 @@ const App = () => {
           />
         </div>
         <GameBoard onSelectBox={handleSelectBox} turns={playerTurn} />
-        <div>log</div>
       </ol>
-    </>
+      <Log turns={playerTurn} />
+    </main>
   );
 };
 
