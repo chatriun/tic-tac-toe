@@ -1,16 +1,17 @@
-const GameBoard = ({ turns, onSelectBox, playerSymbol }) => {
+const GameBoard = ({ turns, onSelectBox }) => {
   return (
     <ol id="game-board">
       {turns.map((row, rowIndex) => (
         <li key={rowIndex}>
           <ol>
-            {row.map((selectedBox, colIndex) => (
+            {/* เปลี่ยนชื่อตัวแปร selectedBox เพราะไม่บอกจุดประสงค์ชัดเจน */}
+            {row.map((playerSymbol, colIndex) => (
               <li key={colIndex}>
                 <button
                   onClick={() => onSelectBox(rowIndex, colIndex)}
                   disabled={playerSymbol !== null}
                 >
-                  {selectedBox}
+                  {playerSymbol}
                 </button>
               </li>
             ))}
